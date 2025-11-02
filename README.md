@@ -108,9 +108,9 @@ print(time.strftime("%Y/%m/%d %I:%M:%S %p", local_time))
 
 | Component   | Description |
 |------------|-------------|
-| **Model**  |  |
-| **View**   |  |
-| **Controller** |  |
+| **Model**  |  | Space Bot Python script (and user through Webex)
+| **View**   |  | external APIs (Webex Cloud, ISS API Server, and LocationIQ Server) that help provide data
+| **Controller** |  | HTTP request to one of the API servers which thne return a JSON response
 
 
 #### Example:

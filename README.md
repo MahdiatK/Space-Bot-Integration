@@ -55,7 +55,17 @@ This investigation sheet helps you gather key technical information from the thr
 | Required query parameters | `key`, `lat`, `lon`, `format=json` |
 | Sample request with latitude/longitude | `(https://us1.locationiq.com/v1/reverse?key=YOUR_API_KEY&lat=51.0&lon=-0.1&format=json)` |
 | Sample JSON response (formatted example) |  
-```
+```json
+{
+  "place_id": "123456",
+  "lat": "51.0",
+  "lon": "-0.1",
+  "display_name": "London, England, United Kingdom",
+  "address": {
+    "city": "London",
+    "country": "United Kingdom"
+  }
+}
 
 ```
 |

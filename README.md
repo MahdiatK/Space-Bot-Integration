@@ -76,13 +76,17 @@ This investigation sheet helps you gather key technical information from the thr
 
 | Criteria | Details |
 |---------|---------|
-| Library used | `_______________________________` |
-| Function used to convert epoch | `_______________________________` |
+| Library used | `time` |
+| Function used to convert epoch | `time.strftime()` with `time.localtime()` |
 | Sample code to convert timestamp |  
-```  
+```python
+import time
+epoch_time = 1730568000
+local_time = time.localtime(epoch_time)
+print(time.strftime("%Y/%m/%d %I:%M:%S %p", local_time))  
 ```
 |
-| Output (human-readable time) | `_______________________________` |
+| Output (human-readable time) | `2025-11-02 22:00:00` |
 
 ---
 

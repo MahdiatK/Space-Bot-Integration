@@ -94,9 +94,9 @@ print(time.strftime("%Y/%m/%d %I:%M:%S %p", local_time))
 
 ### 🌐 Web Architecture – Client-Server Model
 
-- **Client**: 
-- **Server**: 
-- (Explain the communication between them & include a block diagram )
+- **Client**: | Space Bot Python script (and user through Webex)
+- **Server**: external APIs (Webex Cloud, ISS API Server, and LocationIQ Server) that help provide data
+- Client sends a HTTP request to one of the API servers which thne return a JSON response
 
 ### 🔁 RESTful API Usage
 
@@ -108,9 +108,9 @@ print(time.strftime("%Y/%m/%d %I:%M:%S %p", local_time))
 
 | Component   | Description |
 |------------|-------------|
-| **Model**  |  | Space Bot Python script (and user through Webex)
-| **View**   |  | external APIs (Webex Cloud, ISS API Server, and LocationIQ Server) that help provide data
-| **Controller** |  | HTTP request to one of the API servers which thne return a JSON response
+| **Model**  |  | 
+| **View**   |  | 
+| **Controller** |  | 
 
 
 #### Example:

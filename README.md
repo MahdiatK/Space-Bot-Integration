@@ -113,9 +113,9 @@ print(time.strftime("%Y/%m/%d %I:%M:%S %p", local_time))
 
 
 #### Example:
-- Model: 
-- View: 
-- Controller: 
+- Model: ISS + LocationIQ APIs
+- View: Webex room messages
+- Controller: Python logic
 
 ---
 

@@ -13,10 +13,10 @@ This investigation sheet helps you gather key technical information from the thr
 
 | Criteria | Details |
 |---------|---------|
-| API Base URL | `_______________________________` |
-| Authentication Method | `_______________________________` |
-| Endpoint to list rooms | `_______________________________` |
-| Endpoint to get messages | `_______________________________` |
+| API Base URL | `(https://webexapis.com/v1/)` |
+| Authentication Method | `OAuth 2.0 Access Token` |
+| Endpoint to list rooms | `GET /rooms` |
+| Endpoint to get messages | `GET /messages?roomId={roomId}` |
 | Endpoint to send message | `_______________________________` |
 | Required headers | `_______________________________` |
 | Sample full GET or POST request | `_______________________________` |

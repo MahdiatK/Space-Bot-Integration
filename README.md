@@ -107,9 +107,9 @@ print(time.strftime("%Y/%m/%d %I:%M:%S %p", local_time))
 
 | Component   | Description |
 |------------|-------------|
-| **Model**  |  | Retrieves ISS location from the ISS api and transcribing the coordinates through LocationIQ, handles API and data |
-| **View**   |  | The display render, so the webex chat room interface and messages |
-| **Controller** |  | The main Python script (space_iss.py) |
+| **Model**  |  | ' Retrieves ISS location from the ISS api and transcribing the coordinates through LocationIQ, handles API and data ` |
+| **View**   |  | ' The display render, so the webex chat room interface and messages ` |
+| **Controller** |  | ' The main Python script (space_iss.py) ` |
 
 
 #### Example:

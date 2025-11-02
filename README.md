@@ -100,17 +100,16 @@ print(time.strftime("%Y/%m/%d %I:%M:%S %p", local_time))
 
 ### 🔁 RESTful API Usage
 
-- 
-- 
-- 
+- POST for sending messages back to Webex
+- GET for retrieving rooms and ISS location
 
 ### 🧠 MVC Pattern in Space Bot
 
 | Component   | Description |
 |------------|-------------|
-| **Model**  |  | 
-| **View**   |  | 
-| **Controller** |  | 
+| **Model**  |  | Retrieves ISS location from the ISS api and transcribing the coordinates through LocationIQ, handles API and data
+| **View**   |  | The display render, so the webex chat room interface and messages
+| **Controller** |  | The main Python script (space_iss.py)
 
 
 #### Example:

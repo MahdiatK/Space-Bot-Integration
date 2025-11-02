@@ -17,9 +17,9 @@ This investigation sheet helps you gather key technical information from the thr
 | Authentication Method | `OAuth 2.0 Access Token` |
 | Endpoint to list rooms | `GET /rooms` |
 | Endpoint to get messages | `GET /messages?roomId={roomId}` |
-| Endpoint to send message | `_______________________________` |
-| Required headers | `_______________________________` |
-| Sample full GET or POST request | `_______________________________` |
+| Endpoint to send message | `POST /messages` |
+| Required headers | `{ "Authorization": "Bearer <ACCESS_TOKEN>", "Content-Type": "application/json" }` |
+| Sample full GET or POST request | ````python` |
 
 ---
 

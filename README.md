@@ -48,12 +48,12 @@ This investigation sheet helps you gather key technical information from the thr
 
 | Criteria | Details |
 |---------|---------|
-| Provider used (circle one) | **LocationIQ / Mapbox/ other -provide detail** |
-| API Base URL | `_______________________________` |
-| Endpoint for reverse geocoding | `_______________________________` |
-| Authentication method | `_______________________________` |
-| Required query parameters | `_______________________________` |
-| Sample request with latitude/longitude | `_______________________________` |
+| Provider used (circle one) | LocationIQ - Best free plan and easiest to set up |
+| API Base URL | `(https://us1.locationiq.com/v1/)` |
+| Endpoint for reverse geocoding | `GET /reverse` |
+| Authentication method | `API Key` |
+| Required query parameters | `key`, `lat`, `lon`, `format=json` |
+| Sample request with latitude/longitude | `(https://us1.locationiq.com/v1/reverse?key=YOUR_API_KEY&lat=51.0&lon=-0.1&format=json)` |
 | Sample JSON response (formatted example) |  
 ```
 

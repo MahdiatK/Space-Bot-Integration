@@ -165,38 +165,37 @@ if msg_resp.status_code != 200:
             continue
 
 # 11. Store the location received from the API in a required variables
-        CountryResult = json_data["<!!!REPLACEME!!!> with path to adminArea1 key!!!>"]
-        <!!!REPLACEME with code to save state, city, street etc>
-        
-        #Find the country name using ISO3611 country code
-        if not CountryResult == "XZ":
-            CountryResult = countries.get(CountryResult).name
+        address = geo_json.get("address", {})
+        country = address.get("country", "Unknown")
+        state = address.get("state", "")
+        city = address.get("city", "")
+        road = address.get("road", "")
 
 # 12. Complete the code to format the response message.
 #     Example responseMessage result: In Austin, Texas the ISS will fly over on Thu Jun 18 18:42:36 2020 for 242 seconds.
         #responseMessage = "On {}, the ISS was flying over the following location: \n{} \n{}, {} \n{}\n({}\", {}\")".format(timeString, StreetResult, CityResult, StateResult, CountryResult, lat, lng)
 
-        if CountryResult == "XZ":
-            responseMessage = "On {}, the ISS was flying over a body of water at latitude {}° and longitude {}°.".format(timeString, lat, lng)
-        
-<!!!REPLACEME with if statements to compose the message to display the current ISS location in the Webex Team room!!!>
-        elif
-        else
-       
-        # print the response message
-        print("Sending to Webex: " +responseMessage)
+if country == "Unknown":
+            responseMessage = f"On {timeString}, the ISS was flying over the ocean at ({lat}°, {lon}°)."
+        elif city:
+            responseMessage = f"On {timeString}, the ISS was flying over {city}, {country}. ({lat}°, {lon}°)"
+        elif state:
+            responseMessage = f"On {timeString}, the ISS was above {state}, {country}. ({lat}°, {lon}°)"
+        else:
+            responseMessage = f"On {timeString}, the ISS was flying over {country}. ({lat}°, {lon}°)"
+
+        print("Sending to Webex:", responseMessage)
 
 # 13. Complete the code to post the message to the Webex room.         
         # the Webex HTTP headers, including the Authoriztion and Content-Type
-        HTTPHeaders = { 
-                             "Authorization": <!!!REPLACEME!!!>,
-                             "Content-Type": "application/json"
-                           }
-        
-        PostData = {
-                            "roomId": <!!!REPLACEME!!!>,
-                            "text": <!!!REPLACEME!!!>
-                        }
+ headers = {
+            "Authorization": accessToken,
+            "Content-Type": "application/json"
+        }
+        post_data = {
+            "roomId": roomIdToGetMessages,
+            "text": responseMessage
+        }
         # Post the call to the Webex message API.
         r = requests.post( "<!!!REPLACEME with URL!!!>", 
                               data = json.dumps(<!!!REPLACEME!!!>), 
@@ -204,6 +203,7 @@ if msg_resp.status_code != 200:
                          )
         <!!!REPLACEME with code for error handling in case request not successfull>
                 
+
 
 
 

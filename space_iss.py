@@ -50,15 +50,15 @@ r = requests.get(rooms_url, headers={"Authorization": accessToken})
 
 #######################################################################################
 # DO NOT EDIT ANY BLOCKS WITH r.status_code
-if not r.status_code == 200:
-    raise Exception("Incorrect reply from Webex API. Status code: {}. Text: {}".format(r.status_code, r.text))
+if r.status_code != 200:
+    raise Exception(f"Webex API error: {r.status_code} - {r.text}")
 #######################################################################################
 
 # 4. Create a loop to print the type and title of each room.
-print("\nList of available rooms:")
+print("\nList of your Webex rooms:")
 rooms = r.json()["items"]
 for room in rooms:
-    <!!!REPLACEME with print code to finish the loop>
+    print(f"Type: {room['type']} | Name: {room['title']}")
 
 #######################################################################################
 # SEARCH FOR WEBEX ROOM TO MONITOR

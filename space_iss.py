@@ -138,7 +138,7 @@ if msg_resp.status_code != 200:
         
 # 8. Convert the timestamp epoch value to a human readable date and time.
         # Use the time.ctime function to convert the timestamp to a human readable date and time.
-        timeString = <!!!REPLACEME with conversion code!!!>       
+    timeString = time.ctime(timestamp)   
    
 # 9. Provide your Geoloaction API consumer key.
     
@@ -197,6 +197,7 @@ if msg_resp.status_code != 200:
                          )
         <!!!REPLACEME with code for error handling in case request not successfull>
                 
+
 
 
 

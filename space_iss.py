@@ -131,9 +131,10 @@ if msg_resp.status_code != 200:
 
 # 7. Record the ISS GPS coordinates and timestamp.
 
-        lat = json_data["<!!!REPLACEME!!!> with path to latitude key!!!>"]
-        lng = json_data["<!!!REPLACEME!!!> with path to longitude key!!!>"]
-        timestamp = json_data["<!!!REPLACEME!!!> with path to timestamp key!!!>"]
+        iss_json = iss_resp.json()
+        lat = iss_json["iss_position"]["latitude"]
+        lon = iss_json["iss_position"]["longitude"]
+        timestamp = iss_json["timestamp"]
         
 # 8. Convert the timestamp epoch value to a human readable date and time.
         # Use the time.ctime function to convert the timestamp to a human readable date and time.
@@ -196,5 +197,6 @@ if msg_resp.status_code != 200:
                          )
         <!!!REPLACEME with code for error handling in case request not successfull>
                 
+
 
 

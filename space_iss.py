@@ -29,13 +29,14 @@
  
 # 1. Import libraries for API requests, JSON formatting, epoch time conversion, and iso3166.
 
+# 1. Import libraries for API requests, JSON formatting, epoch time conversion, and iso3166.
 import requests
 import json
 import time
 from iso3166 import countries
 
-# 2. Complete the if statement to ask the user for the Webex access token.
-choice = input("Do you want to use the hard-coded Webex token? (y/n): ")
+# 2. Ask the user for the Webex access token.
+choice = input("Do you wish to use the hard-coded Webex token? (y/n): ")
 
 if choice.lower() == "n":
     token_input = input("Please enter your Webex access token: ")
@@ -44,48 +45,42 @@ else:
     accessToken = "Bearer NzU4YzIzODctOWZiNi00NTRiLWFjYjYtZjI4YTJhOGZmOTUwYzQxM2ZhZmYtOTM2_P0A1_bdd2aed2-da17-481d-bd6f-b43037ee90b7"
 
 # 3. Provide the URL to the Webex room API.
-
-rooms_url = "https://webexapis.com/v1/rooms"
-r = requests.get(rooms_url, headers={"Authorization": accessToken})
+r = requests.get("https://webexapis.com/v1/rooms",
+                 headers={"Authorization": accessToken})
 
 #######################################################################################
 # DO NOT EDIT ANY BLOCKS WITH r.status_code
-if r.status_code != 200:
-    raise Exception(f"Webex API error: {r.status_code} - {r.text}")
+if not r.status_code == 200:
+    raise Exception(f"Incorrect reply from Webex API. Status code: {r.status_code}. Text: {r.text}")
 #######################################################################################
 
-# 4. Create a loop to print the type and title of each room.
-print("\nList of your Webex rooms:")
+# 4. Print the type and title of each room.
+print("\nList of available rooms:")
 rooms = r.json()["items"]
 for room in rooms:
-    print(f"Type: {room['type']} | Name: {room['title']}")
+    print(f"Type: {room['type']} | Title: {room['title']}")
 
 #######################################################################################
 # SEARCH FOR WEBEX ROOM TO MONITOR
-#  - Searches for user-supplied room name.
-#  - If found, print "found" message, else prints error.
-#  - Stores values for later use by bot.
-# DO NOT EDIT CODE IN THIS BLOCK
 #######################################################################################
-
 while True:
-    roomSearch = input("\nWhich room should the bot monitor for /seconds messages? ")
+    roomNameToSearch = input("\nWhich room should be monitored for /seconds messages? ")
     roomIdToGetMessages = None
-    
+
     for room in rooms:
-        if(room["title"].find(roomNameToSearch) != -1):
-            print ("Found rooms with the word " + roomNameToSearch)
-            print(room["title"])
+        if roomNameToSearch.lower() in room["title"].lower():
+            print(f"Found room with the word '{roomNameToSearch}': {room['title']}")
             roomIdToGetMessages = room["id"]
             roomTitleToGetMessages = room["title"]
-            print("Found room: " + roomTitleToGetMessages)
+            print("Found room:", roomTitleToGetMessages)
             break
 
-    if not roomIdToGetMessages:
-        print("No matching room found, please try again.")
+    if roomIdToGetMessages is None:
+        print("Sorry, I didn’t find any room with that name. Please try again.")
     else:
-        print(f"Monitoring room: {roomTitleToGetMessages}")
-        break  
+        print("Monitoring room:", roomTitleToGetMessages)
+        break
+
 ######################################################################################
 # WEBEX BOT CODE
 #  Starts Webex bot to listen for and respond to /seconds messages.
@@ -93,56 +88,56 @@ while True:
 
 while True:
     time.sleep(1)
-    params = {"roomId": roomIdToGetMessages, "max": 1}
- 
-# 5. Provide the URL to the Webex messages API.    
-    msg_resp = requests.get("https://webexapis.com/v1/messages",
-                            params=params,
-                            headers={"Authorization": accessToken})
- 
-    # verify if the retuned HTTP status code is 200/OK
-if msg_resp.status_code != 200:
-        print(f"Message API error: {msg_resp.status_code}")
-        continue
-        raise Exception( "Incorrect reply from Webex API. Status code: {}. Text: {}".format(r.status_code, r.text))
+    GetParameters = {
+        "roomId": roomIdToGetMessages,
+        "max": 1
+    }
 
-    msg_data = msg_resp.json()
-    if len(msg_data["items"]) == 0:
+# 5. Provide the URL to the Webex messages API.
+    r = requests.get("https://webexapis.com/v1/messages",
+                     params=GetParameters,
+                     headers={"Authorization": accessToken})
+
+    # verify if the returned HTTP status code is 200/OK
+    if not r.status_code == 200:
+        print(f"Incorrect reply from Webex API. Status code: {r.status_code}. Text: {r.text}")
         continue
-    
-    message = msg_data["items"][0]["text"]
+
+    json_data = r.json()
+    if len(json_data["items"]) == 0:
+        continue
+
+    messages = json_data["items"]
+    message = messages[0]["text"]
     print("Received message:", message)
-    
+
+    # check for a command like /5 or /3
     if message.startswith("/") and message[1:].isdigit():
         seconds = int(message[1:])
-         if seconds > 5:
+        if seconds > 5:
             seconds = 5
-        else:
-          print(f"Waiting {seconds} seconds before fetching ISS data...")
-          time.sleep(seconds
-            
-     time.sleep(seconds)     
-    
-# 6. Provide the URL to the ISS Current Location API.         
-        iss_resp = requests.get("http://api.open-notify.org/iss-now.json")
-        if iss_resp.status_code != 200:
-            print("Could not get ISS data.")
+
+        print(f"Waiting {seconds} seconds before checking ISS location...")
+        time.sleep(seconds)
+
+# 6. Provide the URL to the ISS Current Location API.
+        iss_response = requests.get("http://api.open-notify.org/iss-now.json")
+        if iss_response.status_code != 200:
+            print("Error retrieving ISS data.")
             continue
 
-# 7. Record the ISS GPS coordinates and timestamp.
+        iss_json = iss_response.json()
 
-        iss_json = iss_resp.json()
+# 7. Record the ISS GPS coordinates and timestamp.
         lat = iss_json["iss_position"]["latitude"]
         lon = iss_json["iss_position"]["longitude"]
         timestamp = iss_json["timestamp"]
-        
-# 8. Convert the timestamp epoch value to a human readable date and time.
-        # Use the time.ctime function to convert the timestamp to a human readable date and time.
-    timeString = time.ctime(timestamp)   
-   
-# 9. Provide your Geoloaction API consumer key.
-    
-       geo_params = {
+
+# 8. Convert the epoch time to a readable date/time.
+        timeString = time.ctime(timestamp)
+
+# 9. Provide your Geolocation API consumer key.
+        geo_params = {
             "key": "pk.3ab1a8e82167c509f5f2a88e29533799",
             "lat": lat,
             "lon": lon,
@@ -150,32 +145,24 @@ if msg_resp.status_code != 200:
         }
 
 # 10. Provide the URL to the Reverse GeoCode API.
-    # Get location information using the API reverse geocode service using the HTTP GET method
-        geo_resp = requests.get("https://us1.locationiq.com/v1/reverse",
-                                params=geo_params)
-                        )
+        geo_response = requests.get("https://us1.locationiq.com/v1/reverse",
+                                    params=geo_params)
 
-    # Verify if the returned JSON data from the API service are OK
-        geo_json = geo_resp.json()
-        
-        geo_resp = requests.get("https://us1.locationiq.com/v1/reverse",
-                                params=geo_params)
-        if geo_resp.status_code != 200:
-            print("Error retrieving location data.")
+        if geo_response.status_code != 200:
+            print("Error retrieving geolocation data.")
             continue
 
-# 11. Store the location received from the API in a required variables
+        geo_json = geo_response.json()
+
+# 11. Store the location received from the API.
         address = geo_json.get("address", {})
         country = address.get("country", "Unknown")
         state = address.get("state", "")
         city = address.get("city", "")
         road = address.get("road", "")
 
-# 12. Complete the code to format the response message.
-#     Example responseMessage result: In Austin, Texas the ISS will fly over on Thu Jun 18 18:42:36 2020 for 242 seconds.
-        #responseMessage = "On {}, the ISS was flying over the following location: \n{} \n{}, {} \n{}\n({}\", {}\")".format(timeString, StreetResult, CityResult, StateResult, CountryResult, lat, lng)
-
-if country == "Unknown":
+# 12. Format the response message.
+        if country == "Unknown":
             responseMessage = f"On {timeString}, the ISS was flying over the ocean at ({lat}°, {lon}°)."
         elif city:
             responseMessage = f"On {timeString}, the ISS was flying over {city}, {country}. ({lat}°, {lon}°)"
@@ -186,34 +173,25 @@ if country == "Unknown":
 
         print("Sending to Webex:", responseMessage)
 
-# 13. Complete the code to post the message to the Webex room.         
-        # the Webex HTTP headers, including the Authoriztion and Content-Type
- headers = {
+# 13. Post the message to the Webex room.
+        HTTPHeaders = {
             "Authorization": accessToken,
             "Content-Type": "application/json"
         }
-        post_data = {
+        PostData = {
             "roomId": roomIdToGetMessages,
             "text": responseMessage
         }
-        # Post the call to the Webex message API.
-        send_resp = requests.post("https://webexapis.com/v1/messages",
-                                  data=json.dumps(post_data),
-                                  headers=headers)
-        if send_resp.status_code != 200:
-            print("Failed to send message:", send_resp.text)
+
+        send_response = requests.post("https://webexapis.com/v1/messages",
+                                      data=json.dumps(PostData),
+                                      headers=HTTPHeaders)
+
+        if send_response.status_code != 200:
+            print("Failed to send message:", send_response.text)
         else:
-            print("Message sent successfully.\n")
+            print("Message sent successfully!\n")
 
     else:
-
+     
         continue
-
-
-
-
-
-
-
-
-

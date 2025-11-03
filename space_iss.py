@@ -41,7 +41,7 @@ if choice.lower() == "n":
     token_input = input("Please enter your Webex access token: ")
     accessToken = f"Bearer {token_input}"
 else:
-    accessToken = "Bearer YOUR_WEBEX_TOKEN_HERE"
+    accessToken = "Bearer NzU4YzIzODctOWZiNi00NTRiLWFjYjYtZjI4YTJhOGZmOTUwYzQxM2ZhZmYtOTM2_P0A1_bdd2aed2-da17-481d-bd6f-b43037ee90b7"
 
 # 3. Provide the URL to the Webex room API.
 
@@ -143,7 +143,7 @@ if msg_resp.status_code != 200:
 # 9. Provide your Geoloaction API consumer key.
     
        geo_params = {
-            "key": "YOUR_LOCATIONIQ_KEY",
+            "key": "pk.3ab1a8e82167c509f5f2a88e29533799",
             "lat": lat,
             "lon": lon,
             "format": "json"

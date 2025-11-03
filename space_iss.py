@@ -142,20 +142,27 @@ if msg_resp.status_code != 200:
    
 # 9. Provide your Geoloaction API consumer key.
     
-        mapsAPIGetParameters = { 
-                                <!!!REPLACEME with all the required paramenters by the api>
-                               }
-    
+       geo_params = {
+            "key": "YOUR_LOCATIONIQ_KEY",
+            "lat": lat,
+            "lon": lon,
+            "format": "json"
+        }
+
 # 10. Provide the URL to the Reverse GeoCode API.
     # Get location information using the API reverse geocode service using the HTTP GET method
-        r = requests.get("<!!!REPLACEME with URL!!!>", 
-                             params = mapsAPIGetParameters
+        geo_resp = requests.get("https://us1.locationiq.com/v1/reverse",
+                                params=geo_params)
                         )
 
     # Verify if the returned JSON data from the API service are OK
-        json_data = <!!!REPLACEME with code>
+        geo_json = geo_resp.json()
         
-        <!!!REPLACEME with code for error handling in case no response>
+        geo_resp = requests.get("https://us1.locationiq.com/v1/reverse",
+                                params=geo_params)
+        if geo_resp.status_code != 200:
+            print("Error retrieving location data.")
+            continue
 
 # 11. Store the location received from the API in a required variables
         CountryResult = json_data["<!!!REPLACEME!!!> with path to adminArea1 key!!!>"]
@@ -197,6 +204,7 @@ if msg_resp.status_code != 200:
                          )
         <!!!REPLACEME with code for error handling in case request not successfull>
                 
+
 
 
 

@@ -197,12 +197,13 @@ if country == "Unknown":
             "text": responseMessage
         }
         # Post the call to the Webex message API.
-        r = requests.post( "<!!!REPLACEME with URL!!!>", 
+ send_resp = requests.post("https://webexapis.com/v1/messages", 
                               data = json.dumps(<!!!REPLACEME!!!>), 
                               headers = <!!!REPLACEME!!!>
                          )
         <!!!REPLACEME with code for error handling in case request not successfull>
                 
+
 
 
 

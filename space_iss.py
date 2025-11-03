@@ -93,45 +93,41 @@ while True:
 
 while True:
     time.sleep(1)
-    GetParameters = {
-                            "roomId": roomIdToGetMessages,
-                            "max": 1
-                    }
+    params = {"roomId": roomIdToGetMessages, "max": 1}
+ 
 # 5. Provide the URL to the Webex messages API.    
-    r = requests.get("<!!!REPLACEME with URL!!!>", 
-                         params = GetParameters, 
-                         headers = {"Authorization": accessToken}
-                    )
+    msg_resp = requests.get("https://webexapis.com/v1/messages",
+                            params=params,
+                            headers={"Authorization": accessToken})
+ 
     # verify if the retuned HTTP status code is 200/OK
-    if not r.status_code ==  <!!!REPLACEME with http code>:
+if msg_resp.status_code != 200:
+        print(f"Message API error: {msg_resp.status_code}")
+        continue
         raise Exception( "Incorrect reply from Webex API. Status code: {}. Text: {}".format(r.status_code, r.text))
 
-    json_data = r.json()
-    if len(json_data["items"]) == 0:
-         <!!!REPLACEME with code for error handling>    
+    msg_data = msg_resp.json()
+    if len(msg_data["items"]) == 0:
+        continue
     
-    messages = json_data["items"]
-    message = messages[0]["text"]
-    <!!!REPLACEME with print code to print message>  
+    message = msg_data["items"][0]["text"]
+    print("Received message:", message)
     
-    if message.find("/") == 0:    
-        if (message[1:].isdigit()):
-            seconds = int(message[1:])  
+    if message.startswith("/") and message[1:].isdigit():
+        seconds = int(message[1:])
+         if seconds > 5:
+            seconds = 5
         else:
-             <!!!REPLACEME with code for error handling>
-    
-    #for the sake of testing, the max number of seconds is set to 5.
-        if seconds > 5:
-            seconds = 5    
+          print(f"Waiting {seconds} seconds before fetching ISS data...")
+          time.sleep(seconds
             
-        time.sleep(seconds)     
+     time.sleep(seconds)     
     
 # 6. Provide the URL to the ISS Current Location API.         
-        r = requests.get("<!!!REPLACEME with URL!!!>")
-        
-        json_data = <!!!REPLACEME with code>
-        
-        <!!!REPLACEME with code for error handling in case not success response>
+        iss_resp = requests.get("http://api.open-notify.org/iss-now.json")
+        if iss_resp.status_code != 200:
+            print("Could not get ISS data.")
+            continue
 
 # 7. Record the ISS GPS coordinates and timestamp.
 
@@ -200,4 +196,5 @@ while True:
                          )
         <!!!REPLACEME with code for error handling in case request not successfull>
                 
+
 
